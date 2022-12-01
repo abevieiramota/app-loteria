@@ -44,7 +44,7 @@ for i in range(51):
   
   print('Concluído')
 
-columns = ['data', 'turno'] + [f'premio_{i}' for i in range(1, 11)]
+columns = ['data', 'turno'] + [f'premio{i}' for i in range(1, 11)]
 
 with open('lotece.csv', 'w') as f:
   w = csv.DictWriter(f, columns)
