@@ -30,17 +30,23 @@ public class PredicaoService {
 	private Loteria loteria;
 
 	public PredicaoService(Dezena tipoDezena, Loteria loteria) {
-		// TODO: injeção de dependência
 		this.dezena = tipoDezena;
 		this.loteria = loteria;
 	}
 
-	private List<Predicao> gerarPredicoes(Set<Turno> turnos) {
+	private List<Predicao> gerarPredicoes(Set<Turno> turnos, Boolean isPar) {
 		checkNotNull(turnos);
 
 		Dao dao = new Dao();
 
 		List<Resultado> resultados = dao.allResultados(turnos, this.loteria);
+
+		if (isPar != null) {
+			resultados = resultados
+				.stream()
+				.filter(r -> (r.getId() % 2 == 0) == isPar)
+				.toList();
+		}
 
 		List<Predicao> predicoes = new ArrayList<>();
 		for (Premio premio : Premio.values()) {
@@ -97,10 +103,10 @@ public class PredicaoService {
 		return sb.toString();
 	}
 
-	public String predicoesParaImpressaoCompleta(Set<Turno> turnos) {
+	public String predicoesParaImpressaoCompleta(Set<Turno> turnos, Boolean isPar) {
 		checkNotNull(turnos);
 
-		List<Predicao> predicoes = gerarPredicoes(turnos);
+		List<Predicao> predicoes = gerarPredicoes(turnos, isPar);
 		StringBuilder sb = new StringBuilder();
 		sb.append(predicoesParaImpressaoCompletaRow(predicoes.subList(0, 5), this.dezena));
 		sb.append(LINE_SEPARATOR);
@@ -114,7 +120,7 @@ public class PredicaoService {
 		StringBuilder sb = new StringBuilder();
 
 		for (Set<Turno> turnos : combinacoesDeTurnos) {
-			List<Predicao> predicoes = gerarPredicoes(turnos);
+			List<Predicao> predicoes = gerarPredicoes(turnos, null);
 
 			sb.append(Joiner.on(" ").join(turnos));
 			sb.append(LINE_SEPARATOR);

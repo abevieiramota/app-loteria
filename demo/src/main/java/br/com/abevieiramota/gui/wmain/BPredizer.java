@@ -62,7 +62,8 @@ public class BPredizer extends JButton {
 					PredicaoService predicaoService = new PredicaoService(dezena, Parametros.getLoteria());
 
 					for (Set<Turno> turnosAPredizer : combinacoesDeTurnos) {
-						gerarArquivoPorTurnos(dezena, predicaoService, turnosAPredizer);
+						gerarArquivoPorTurnos(dezena, predicaoService, turnosAPredizer, true);
+						gerarArquivoPorTurnos(dezena, predicaoService, turnosAPredizer, false);
 					}
 
 					gerarArquivoResumido(dezena, predicaoService, combinacoesDeTurnos);
@@ -86,13 +87,13 @@ public class BPredizer extends JButton {
 			Files.asCharSink(fileResumido, DEFAULT_CHARSET).write(contentResumido);
 		}
 
-		private void gerarArquivoPorTurnos(Dezena dezena, PredicaoService predicaoService, Set<Turno> turnosAPredizer)
+		private void gerarArquivoPorTurnos(Dezena dezena, PredicaoService predicaoService, Set<Turno> turnosAPredizer, Boolean isPar)
 				throws SQLException, IOException {
 
-			String contentPorTurno = predicaoService.predicoesParaImpressaoCompleta(turnosAPredizer);
+			String contentPorTurno = predicaoService.predicoesParaImpressaoCompleta(turnosAPredizer, isPar);
 
 			File filenamePorTurno = new File(
-					String.format(FILE_NAME_PREDICAO_POR_TURNO, Parametros.getLoteria(), dezena, turnosAPredizer));
+					String.format(FILE_NAME_PREDICAO_POR_TURNO, Parametros.getLoteria(), dezena, isPar ? "PAR" : "IMPAR"));
 
 			Files.asCharSink(filenamePorTurno, DEFAULT_CHARSET).write(contentPorTurno);
 		}

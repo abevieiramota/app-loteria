@@ -21,7 +21,6 @@ public class WMain extends WDefault {
 	private static final String TITLE = Messages.getString("ui.w_main.title");
 	private LabelUltimaAtualizacao lStatusBar;
 	private JButton bBuscarResultado;
-	private JButton bAtualizar;
 	private JButton bPredizer;
 	private JButton bAdicionar;
 	private ComboLoteria tipoLoteria;
@@ -36,8 +35,6 @@ public class WMain extends WDefault {
 		pBotoes.add(this.bAdicionar);
 		pBotoes.add(Box.createRigidArea(new Dimension(0, 10)));
 		pBotoes.add(this.bBuscarResultado);
-		pBotoes.add(Box.createRigidArea(new Dimension(0, 10)));
-		pBotoes.add(this.bAtualizar);
 		pBotoes.add(Box.createRigidArea(new Dimension(0, 10)));
 		pBotoes.add(this.bPredizer);
 
@@ -54,7 +51,6 @@ public class WMain extends WDefault {
 		this.tipoLoteria = new ComboLoteria();
 		this.lStatusBar = new LabelUltimaAtualizacao();
 		this.bBuscarResultado = new BBuscarResultado(this);
-		this.bAtualizar = new BAtualizar(this.lStatusBar);
 		this.bPredizer = new BPredizer(this);
 		this.bAdicionar = new BAdicionar(this);
 	}
