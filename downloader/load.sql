@@ -1,4 +1,5 @@
 delete from resultado;
+DELETE FROM lotece_csv;
 
 INSERT INTO resultado
 ("data", premio1, premio2, premio3, premio4, premio5, premio6, premio7, premio8, premio9, premio10, id_turno, id_loteria)

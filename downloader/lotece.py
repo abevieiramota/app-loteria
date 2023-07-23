@@ -11,30 +11,29 @@ def get_resultados_from_url(url):
   main_div = soup.find('div', class_='dataResultado')
 
   resultados = []
-  current_resultado = {}
-  current_premio = None
 
-  for div in main_div.find_all('div'):
-    if div.get('class') == ['data', 'branco']:
-      div_parts = div.text.split(' ')
-
-      current_resultado = {
-        'data': div_parts[1],
-        'turno': div_parts[-1],
-      }
-      current_premio = 0
-      resultados.append(current_resultado)
-    elif div.get('class') == ['numeros']:
-      current_premio += 1
-      key = f'premio{current_premio}'
-      current_resultado[key] = div.text.strip()
-
-  resultados.append(current_resultado)
-
+  for div in main_div.find_all('div', {'class': 'data branco'}):
+    in_divs = div.find_all('div')
+    data_turno = {
+      'data': in_divs[1].text.strip().split(' ')[-1],
+      'turno': in_divs[0].text.strip().split(' ')[-1],
+    }
+    resultados.append(data_turno)
+      
+  numeros = [d.text.strip() for d in main_div.find_all('div', {'class': 'numeros'})]
+  
+  rix = 0
+  pix = 0
+  
+  for dt in resultados:
+    for i, n in enumerate(numeros[pix : pix + 10]):
+      dt['premio{}'.format(i + 1)] = n
+    pix = pix + 10
+    
   return resultados
 
 for i in range(51):
-  url = f'http://www.lotece.com.br/v2/?page_id=70&pg={i}&data='
+  url = f'https://lotece.com.br/resultados/?pg={i}&data='
   
   print(f'Iniciando: {url}')
   
